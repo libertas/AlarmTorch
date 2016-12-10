@@ -4,8 +4,16 @@
 
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.autofocus" />
+
+    <receiver
+        android:name=".OneShotAlarm"
+        android:process=":remote" />
+    <receiver
+        android:name=".RepeatingAlarm"
+        android:process=":remote" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".TorchActivity"></activity>
     </application>
 
 </manifest>

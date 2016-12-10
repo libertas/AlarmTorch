@@ -1,37 +1,29 @@
 package testtorch.roeg.org.alarmtorch;
 
-import android.hardware.Camera;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Camera.Parameters parameter = null;
-    private Camera camera = null;
+    private BroadcastReceiver alarmReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
 
-    protected void camOn() {
-        camera = Camera.open();
-        camera.startPreview();
-        parameter = camera.getParameters();
-        parameter.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-        camera.setParameters(parameter);
-    }
-
-    protected void camOff() {
-        parameter = camera.getParameters();
-        parameter.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-        camera.setParameters(parameter);
-
-        camera.release();
-    }
-
+            Intent i = new Intent(context, TorchActivity.class);
+            startActivity(i);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +40,16 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.android.deskclock.ALARM_ALERT");
+        filter.addAction("com.android.deskclock.ALARM_DONE");
+        registerReceiver(alarmReceiver, filter);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        camOff();
 
         android.os.Debug.stopMethodTracing();
     }
@@ -62,15 +57,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
-
-        camOff();
     }
 
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
-
-        camOn();
     }
 
     @Override
