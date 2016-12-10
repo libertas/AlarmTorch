@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.android.deskclock.ALARM_ALERT");
-        filter.addAction("com.android.deskclock.ALARM_DONE");
+        // filter.addAction("com.android.deskclock.ALARM_DONE");
         registerReceiver(alarmReceiver, filter);
     }
 

@@ -42,8 +42,6 @@ public class TorchActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
-
-        camOff();
     }
 
     @Override
